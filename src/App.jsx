@@ -6,6 +6,8 @@ import HomePage from './pages/HomePage';
 import ProductsPage from "./pages/ProductsPage.jsx";
 import ProductDetailPage from "./pages/ProductDetailPage.jsx";
 import CartSidebar from "./components/cart/CartSidebar.jsx";
+import CheckoutPage from './pages/CheckoutPage';
+import OrderConfirmationPage from './pages/OrderConfirmationPage';
 
 function App() {
     const [isCartOpen, setIsCartOpen] = useState(false);
@@ -19,6 +21,8 @@ function App() {
                             <Route path="/" element={<HomePage />} />
                             <Route path="/products" element={<ProductsPage />} />
                             <Route path="/product/:id" element={<ProductDetailPage />} />
+                            <Route path="/checkout" element={<CheckoutPage />} />
+                            <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
                             {/* More routes will be added */}
                         </Routes>
                     </div>
