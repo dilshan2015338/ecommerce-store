@@ -4,6 +4,7 @@ import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import HomePage from './pages/HomePage';
 import ProductsPage from "./pages/ProductsPage.jsx";
+import ProductDetailPage from "./pages/ProductDetailPage.jsx";
 
 function App() {
     return (
@@ -14,7 +15,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/products" element={<ProductsPage />} />
-                        <Route path="/product/:id" element={<div>Product Detail Coming Soon</div>} />
+                        <Route path="/product/:id" element={<ProductDetailPage />} />
                         {/* More routes will be added */}
                     </Routes>
                 </main>

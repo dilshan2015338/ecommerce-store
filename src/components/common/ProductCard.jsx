@@ -1,9 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
+    const navigate = useNavigate();
+    const productId = product.id; // Your product ID
+
+    const handleButtonClick = () => {
+        navigate(`/product/${productId}`);
+    };
     return (
-        <div className="card hover:shadow-xl transition hover:-translate-y-1">
+        <div onClick={() => handleButtonClick()} className="card hover:shadow-xl transition hover:-translate-y-1">
             <div className="relative">
                 <img
                     src={product.image || 'https://via.placeholder.com/300x200'}
