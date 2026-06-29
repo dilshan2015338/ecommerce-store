@@ -1,7 +1,9 @@
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
+import { useCartContext } from '../../context/CartContext';
 
 const ProductCard = ({ product }) => {
+    const { addToCart } = useCartContext();
     const navigate = useNavigate();
     const productId = product.id; // Your product ID
 
@@ -41,6 +43,7 @@ const ProductCard = ({ product }) => {
           </span>
                 </div>
                 <button
+                    onClick={() => addToCart(product.id, 1)}
                     className="btn-primary w-full mt-3 text-sm"
                     disabled={product.stock <= 0}
                 >

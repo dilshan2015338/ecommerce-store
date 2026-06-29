@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
+import {useCartContext} from '../../context/CartContext';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const {cart} = useCartContext();
 
     return (
         <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -10,7 +12,10 @@ const Navbar = () => {
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2">
-                        <span className="text-2xl">🛒</span>
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                          {cart.itemCount}
+                        </span>
+                        {/*<span className="text-2xl">🛒</span>*/}
                         <span className="text-xl font-bold text-blue-600">ShopHub</span>
                     </Link>
 
@@ -25,7 +30,8 @@ const Navbar = () => {
                     <div className="flex items-center gap-4">
                         <button className="relative p-2 hover:bg-gray-100 rounded-full transition">
                             <span className="text-2xl">🛒</span>
-                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                            <span
+                                className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
                 0
               </span>
                         </button>
