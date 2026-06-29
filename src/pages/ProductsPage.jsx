@@ -1,64 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import ProductCard from '../components/common/ProductCard';
+import ProductFilters from '../components/products/ProductFilters';
 
 const ProductsPage = () => {
-    // Mock product data
-    const [products] = useState([
-        {
-            id: 1,
-            name: "Wireless Bluetooth Headphones",
-            description: "Premium noise-cancelling headphones with 30hr battery life",
-            price: 79.99,
-            image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300",
-            category: "Electronics",
-            stock: 15,
-            rating: 4.8
-        },
-        {
-            id: 2,
-            name: "Smart Fitness Watch",
-            description: "Track your health with heart rate monitor and GPS",
-            price: 149.99,
-            image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300",
-            category: "Electronics",
-            stock: 8,
-            rating: 4.6
-        },
-        {
-            id: 3,
-            name: "Classic Leather Backpack",
-            description: "Handcrafted genuine leather backpack for everyday use",
-            price: 59.99,
-            image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300",
-            category: "Fashion",
-            stock: 20,
-            rating: 4.3
-        },
-        {
-            id: 4,
-            name: "Smartphone 12 Pro",
-            description: "Latest model with 5G and professional camera system",
-            price: 999.99,
-            image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300",
-            category: "Electronics",
-            stock: 0,
-            rating: 4.9
-        },
-    ]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [category, setCategory] = useState('all');
+    const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+
+    // Mock data
+    const allProducts = [
+        { id: 1, name: "Wireless Bluetooth Headphones", description: "Premium noise-cancelling...", price: 79.99, category: "Electronics", stock: 15, rating: 4.8, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300" },
+        { id: 2, name: "Smart Fitness Watch", description: "Track your health...", price: 149.99, category: "Electronics", stock: 8, rating: 4.6 , image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300"},
+        { id: 3, name: "Classic Leather Backpack", description: "Handcrafted genuine...", price: 59.99, category: "Fashion", stock: 20, rating: 4.3 , image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300"},
+        { id: 4, name: "Smartphone 12 Pro", description: "Latest model with 5G...", price: 999.99, category: "Electronics", stock: 0, rating: 4.9 , image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300"},
+    ];
+
+    const categories = [...new Set(allProducts.map(p => p.category))];
+
+    // Filter products
+    const filteredProducts = useMemo(() => {
+        let result = allProducts;
+
+        if (searchTerm.trim()) {
+            result = result.filter(p =>
+                p.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        if (category !== 'all') {
+            result = result.filter(p => p.category === category);
+        }
+
+        result = result.filter(p =>
+            p.price >= priceRange.min && p.price <= priceRange.max
+        );
+
+        return result;
+    }, [allProducts, searchTerm, category, priceRange]);
 
     return (
         <div className="container mx-auto px-4 py-8">
-            {/* Page Header */}
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl font-bold text-gray-800">All Products</h1>
-                <span className="text-gray-500">{products.length} products</span>
+                <span className="text-gray-500">{filteredProducts.length} products</span>
             </div>
 
-            {/* Product Grid */}
+            <ProductFilters
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                category={category}
+                setCategory={setCategory}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                categories={categories}
+            />
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {products.map(product => (
-                    <ProductCard key={product.id} product={product} />
-                ))}
+                {filteredProducts.length > 0 ? (
+                    filteredProducts.map(product => (
+                        <ProductCard key={product.id} product={product} />
+                    ))
+                ) : (
+                    <div className="col-span-full text-center py-12">
+                        <p className="text-6xl mb-4">🔍</p>
+                        <p className="text-gray-500 text-lg">No products found</p>
+                        <p className="text-gray-400">Try adjusting your filters</p>
+                    </div>
+                )}
             </div>
         </div>
     );
