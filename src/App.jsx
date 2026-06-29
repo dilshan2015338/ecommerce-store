@@ -1,23 +1,23 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/common/Navbar';
+import Footer from './components/common/Footer';
+import HomePage from './pages/HomePage';
 
 function App() {
     return (
-        <div className="min-h-screen bg-gray-50">
-            <div className="container mx-auto px-4 py-12">
-                <div className="text-center">
-                    <h1 className="text-5xl font-bold text-blue-600 mb-4">
-                        🛒 E-Commerce Shop
-                    </h1>
-                    <p className="text-xl text-gray-600 mb-8">
-                        Built with React + Vite + Tailwind CSS
-                    </p>
-                    <div className="flex justify-center gap-4 flex-wrap">
-                        <button className="btn-primary">Browse Products</button>
-                        <button className="btn-secondary">View Cart</button>
-                    </div>
-                </div>
+        <Router>
+            <div className="min-h-screen bg-gray-50 flex flex-col">
+                <Navbar />
+                <main className="flex-1">
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        {/* More routes will be added */}
+                    </Routes>
+                </main>
+                <Footer />
             </div>
-        </div>
+        </Router>
     );
 }
 
