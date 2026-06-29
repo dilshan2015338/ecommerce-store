@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useCartContext} from '../../context/CartContext';
 
-const Navbar = () => {
+const Navbar = ({ setIsCartOpen }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {cart} = useCartContext();
 
@@ -12,9 +12,6 @@ const Navbar = () => {
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2">
-                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                          {cart.itemCount}
-                        </span>
                         {/*<span className="text-2xl">🛒</span>*/}
                         <span className="text-xl font-bold text-blue-600">ShopHub</span>
                     </Link>
@@ -28,12 +25,15 @@ const Navbar = () => {
 
                     {/* Cart & Actions */}
                     <div className="flex items-center gap-4">
-                        <button className="relative p-2 hover:bg-gray-100 rounded-full transition">
+                        <button
+                            onClick={() => setIsCartOpen(true)}
+                            className="relative p-2 hover:bg-gray-100 rounded-full transition"
+                        >
                             <span className="text-2xl">🛒</span>
                             <span
                                 className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                0
-              </span>
+                                {cart.itemCount}
+                            </span>
                         </button>
                         <button className="hidden md:block btn-primary text-sm px-4 py-2">
                             Login
