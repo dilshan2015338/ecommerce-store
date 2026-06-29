@@ -11,7 +11,7 @@ const ProductCard = ({ product }) => {
         navigate(`/product/${productId}`);
     };
     return (
-        <div onClick={() => handleButtonClick()} className="card hover:shadow-xl transition hover:-translate-y-1">
+        <div key={product.id} onClick={() => handleButtonClick()} className="card hover:shadow-xl transition hover:-translate-y-1">
             <div className="relative">
                 <img
                     src={product.image || 'https://via.placeholder.com/300x200'}

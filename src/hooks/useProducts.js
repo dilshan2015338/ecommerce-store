@@ -7,6 +7,7 @@ export const useProducts = () => {
     const [error, setError] = useState(null);
 
     const loadProducts = async () => {
+        console.log('Loading products...');
         try {
             setLoading(true);
             const data = await productApi.getAll();

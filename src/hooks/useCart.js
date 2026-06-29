@@ -4,11 +4,12 @@ import { cartApi } from '../services/api';
 export const useCart = () => {
     const [cart, setCart] = useState({ items: [], total: 0, itemCount: 0 });
     const [loading, setLoading] = useState(true);
+    const [token, setToken] = useState(localStorage.getItem('token'));
 
     const loadCart = async () => {
         try {
             setLoading(true);
-            const data = await cartApi.getCart();
+            const data = await cartApi.getCart(token);
             setCart(data);
         } catch (error) {
             console.error('Error loading cart:', error);
@@ -19,7 +20,7 @@ export const useCart = () => {
 
     const addToCart = useCallback(async (productId, quantity = 1) => {
         try {
-            const updatedCart = await cartApi.addItem(productId, quantity);
+            const updatedCart = await cartApi.addItem(productId, quantity, token);
             setCart(updatedCart);
             return updatedCart;
         } catch (error) {
@@ -30,7 +31,7 @@ export const useCart = () => {
 
     const updateQuantity = useCallback(async (productId, quantity) => {
         try {
-            const updatedCart = await cartApi.updateItem(productId, quantity);
+            const updatedCart = await cartApi.updateItem(productId, quantity, token);
             setCart(updatedCart);
             return updatedCart;
         } catch (error) {
@@ -41,7 +42,7 @@ export const useCart = () => {
 
     const removeFromCart = useCallback(async (productId) => {
         try {
-            await cartApi.removeItem(productId);
+            await cartApi.removeItem(productId, token);
             await loadCart(); // Reload cart
         } catch (error) {
             console.error('Error removing from cart:', error);
@@ -61,7 +62,7 @@ export const useCart = () => {
 
     useEffect(() => {
         loadCart();
-    }, []);
+    }, [token]);
 
     return { cart, loading, addToCart, updateQuantity, removeFromCart, clearCart, loadCart };
 };

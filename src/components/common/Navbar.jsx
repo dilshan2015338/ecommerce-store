@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useCartContext} from '../../context/CartContext';
+import {useAuth} from "../../context/AuthContext.jsx";
 
 const Navbar = ({ setIsCartOpen }) => {
+    const { user, logout, isAuthenticated } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {cart} = useCartContext();
 
@@ -35,9 +37,37 @@ const Navbar = ({ setIsCartOpen }) => {
                                 {cart.itemCount}
                             </span>
                         </button>
-                        <button className="hidden md:block btn-primary text-sm px-4 py-2">
-                            Login
-                        </button>
+                        {/*<button className="hidden md:block btn-primary text-sm px-4 py-2">*/}
+                        {/*    Login*/}
+                        {/*</button>*/}
+                        {/* Auth Buttons */}
+                        {isAuthenticated ? (
+                                <div className="flex items-center gap-3">
+                                    <Link to="/profile" className="flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-full">
+                                        <span className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                          {user?.fullName?.charAt(0) || user?.username?.charAt(0) || 'U'}
+                                        </span>
+                                        <span className="text-sm font-medium text-gray-700 hidden sm:block">
+                                          {user?.fullName?.split(' ')[0] || user?.username}
+                                        </span>
+                                    </Link>
+                                    {/*<button*/}
+                                    {/*    onClick={logout}*/}
+                                    {/*    className="text-sm text-gray-500 hover:text-red-500 transition"*/}
+                                    {/*>*/}
+                                    {/*    Logout*/}
+                                    {/*</button>*/}
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-2">
+                                    <Link to="/login" className="btn-secondary text-sm px-4 py-2">
+                                        Login
+                                    </Link>
+                                    <Link to="/register" className="btn-primary text-sm px-4 py-2">
+                                        Register
+                                    </Link>
+                                </div>
+                            )}
 
                         {/* Mobile Menu Toggle */}
                         <button

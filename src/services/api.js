@@ -27,29 +27,44 @@ export const productApi = {
 
 // Cart API
 export const cartApi = {
-    getCart: async () => {
-        const response = await fetch(`${API_BASE_URL}/cart`);
+    getCart: async (token) => {
+        const response = await fetch(`${API_BASE_URL}/cart`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
         return handleResponse(response);
     },
-    addItem: async (productId, quantity) => {
+    addItem: async (productId, quantity, token) => {
         const response = await fetch(`${API_BASE_URL}/cart/items`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ productId, quantity }),
         });
         return handleResponse(response);
     },
-    updateItem: async (productId, quantity) => {
+    updateItem: async (productId, quantity, token) => {
         const response = await fetch(`${API_BASE_URL}/cart/items/${productId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ quantity }),
         });
         return handleResponse(response);
     },
-    removeItem: async (productId) => {
+    removeItem: async (productId, token) => {
         const response = await fetch(`${API_BASE_URL}/cart/items/${productId}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
         });
         if (!response.ok) throw new Error('Remove failed');
         return true;

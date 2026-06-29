@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import {useProductContext} from "../context/ProductContext.jsx";
+import {useCartContext} from "../context/CartContext.jsx";
 
 const ProductDetailPage = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
+    const { products } = useProductContext();
+    const { addToCart } = useCartContext();
 
     useEffect(() => {
         // Mock API call - will be replaced with real API
-        const mockProducts = [
-            { id: 1, name: "Wireless Bluetooth Headphones", description: "Premium noise-cancelling headphones with 30hr battery life. Perfect for travel and daily use.", price: 79.99, category: "Electronics", stock: 15, rating: 4.8, reviews: 127 },
-            { id: 2, name: "Smart Fitness Watch", description: "Track your health with heart rate monitor, GPS, and sleep tracking. Water resistant to 50m.", price: 149.99, category: "Electronics", stock: 8, rating: 4.6, reviews: 89 },
-        ];
+        // const mockProducts = [
+        //     { id: 1, name: "Wireless Bluetooth Headphones", description: "Premium noise-cancelling headphones with 30hr battery life. Perfect for travel and daily use.", price: 79.99, category: "Electronics", stock: 15, rating: 4.8, reviews: 127 },
+        //     { id: 2, name: "Smart Fitness Watch", description: "Track your health with heart rate monitor, GPS, and sleep tracking. Water resistant to 50m.", price: 149.99, category: "Electronics", stock: 8, rating: 4.6, reviews: 89 },
+        // ];
 
-        const found = mockProducts.find(p => p.id === parseInt(id));
+        const found = products.find(p => p.id === parseInt(id));
         setProduct(found);
         setLoading(false);
-    }, [id]);
+    }, [id, products]);
 
     if (loading) return <div className="text-center py-12">Loading...</div>;
     if (!product) return <div className="text-center py-12">Product not found</div>;
@@ -32,7 +36,7 @@ const ProductDetailPage = () => {
                 {/* Product Image */}
                 <div className="card">
                     <img
-                        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600"
+                        src={product.image || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600"}
                         alt={product.name}
                         className="w-full rounded-lg"
                     />
@@ -79,8 +83,12 @@ const ProductDetailPage = () => {
                     </div>
 
                     <div className="mt-6 flex gap-4">
-                        <button className="btn-primary flex-1 text-lg">
-                            🛒 Add to Cart
+                        <button
+                            onClick={() => addToCart(product.id, quantity)}
+                            className="btn-primary w-full mt-3 text-sm"
+                            disabled={product.stock <= 0}
+                        >
+                            {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
                         </button>
                         <button className="btn-secondary">
                             ❤️
