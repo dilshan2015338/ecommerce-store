@@ -5,6 +5,9 @@ export const useCart = () => {
     const [cart, setCart] = useState({ items: [], total: 0, itemCount: 0 });
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState(localStorage.getItem('token'));
+    useEffect(() => {
+        setToken(localStorage.getItem('token'));
+    }, [localStorage])
 
     const loadCart = async () => {
         try {
